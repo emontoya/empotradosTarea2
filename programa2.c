@@ -22,15 +22,17 @@ int main(int argc, const char *argv[]){
   if (argc <2 || argc > 3){
     mensajeValidacionEntrada("Argumentos inválidos");
   } else if (argc == 2){
-    parsearEntero(argv[1], &final);
-
-    if (argv[1][final] == '/'){
-      final++;
-      parsearEntero(argv[1],&final);
-    }
-    else {
-      mensajeValidacionEntrada("Argumentos invládos");
-    }
+	if(parsearEntero(argv[1], &final) != 0){
+		if (argv[1][final] == '/'){
+		  final++;
+		  parsearEntero(argv[1],&final);
+		}
+		else {
+		  mensajeValidacionEntrada("Argumentos invládos");
+		}
+	} else {
+		mensajeValidacionEntrada("Argumentos inválidos(Arg 2 parse 1 fail)");
+	}
   } else {
     parsearEntero(argv[1], &final);
 

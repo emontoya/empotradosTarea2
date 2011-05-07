@@ -37,7 +37,7 @@ void terminarConError(const char *err){
  */
 void mensajeValidacionEntrada(const char *msg){
   fprintf(stderr, "[Error]: %s\n", msg);
-  fprintf(stderr,errorArgumentos); 
+  fprintf(stderr, "%s", errorArgumentos); 
   exit(1);
 }
 
@@ -72,7 +72,7 @@ int parsearEntero(const char *arg, int *posicion){
             case '8':
             case '9':
               /* Mover el puntero para consumir el siguiente caracter y pasar al estado 1*/
-              posicion++;
+              (*posicion)++;
               estado = 1;
               break;
             default:
@@ -94,7 +94,7 @@ int parsearEntero(const char *arg, int *posicion){
             case '8':
             case '9':
               /* Mover el puntero para consumir el siguiente caracter y pasar al estado 1*/
-              posicion++;
+              (*posicion)++;
               break;
             default:
               return 1;

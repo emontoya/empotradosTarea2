@@ -1,0 +1,9 @@
+# Archivos temporales de vim
+*~
+
+# Compilados
+*.o
+
+# Ejecutables
+programa1
+programa2
