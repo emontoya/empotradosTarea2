@@ -19,7 +19,6 @@ int main(int argc, const char *argv[]){
   
   int inicio = 0;
   int final = 0;
-  char *numero;
 
   if (argc <2 || argc > 3){
     mensajeValidacionEntrada("Argumentos inválidos");
@@ -32,10 +31,7 @@ int main(int argc, const char *argv[]){
       /* Verificar que el fallo en el parsing sea por el separador */
       if (argv[1][final] == '/'){
         /* Imprimir el primer entero reconocido*/
-        printf("Primer entero: [%s]\n", numero = obtenerValor(argv[1], inicio, final-1));
-        
-        /* Liberar el string asignado para guardar el número*/
-        free(numero);
+        printf("Primer entero: %d\n", red);
 
         /* Descartar el separador */
         final++;
@@ -48,11 +44,7 @@ int main(int argc, const char *argv[]){
          */
         if(parsearEntero(argv[1],&final, &bits, &validarEntero31Bits) == 0){
           /* Imprimir el segundo entero reconocido*/
-          printf("Segundo entero: [%s]\n", numero = obtenerValor(argv[1], inicio, final-1));
-          
-          /* Liberar el string asignado para guardar el número*/
-          free(numero);
-           
+          printf("Segundo entero: %d\n", bits);
         } else {
           mensajeValidacionEntrada("Argumentos inválidos (Segundo entero)");
         }
@@ -70,10 +62,7 @@ int main(int argc, const char *argv[]){
     }
 
     /* Imprimir el primer entero reconocido*/
-    printf("Segundo entero: [%s]\n", numero = obtenerValor(argv[1], inicio, final-1));
-    
-    /* Liberar el string asignado para guardar el número*/
-    free(numero);
+    printf("Primer entero: %d\n", red);
 
     /* Indicar que no se comienza en el primer caracter para el segundo numero*/
     final = 0;
@@ -84,10 +73,7 @@ int main(int argc, const char *argv[]){
     }
 
     /* Imprimir el segundo entero reconocido*/
-    printf("Segundo entero: [%s]\n", numero = obtenerValor(argv[2], inicio, final-1));
-    
-    /* Liberar el string asignado para guardar el número*/
-    free(numero);
+    printf("Segundo entero: %d\n", bits);
   }
 
   return 0;

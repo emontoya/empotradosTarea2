@@ -103,6 +103,9 @@ int parsearEntero(const char *arg, int *posicion, uint32_t *result, validadorEnt
   /* Inicializar el procesamiento en el estado inicial */
   int estado = 0;
 
+  /* Inicializar el entero a construir*/
+  *result = 0;
+
   /* 
    * Ciclo infinito para consumir los caracteres
    * cada estado final esresponsable de retornar
@@ -123,6 +126,9 @@ int parsearEntero(const char *arg, int *posicion, uint32_t *result, validadorEnt
           case '7':
           case '8':
           case '9':
+            /* Construir la sección del número reconocido*/
+            *result = *result * 10 + ((int)arg[*posicion] - 48);
+
             /* Mover el puntero para consumir el siguiente caracter y pasar al estado 1*/
             (*posicion)++;
             estado = 1;
@@ -145,6 +151,9 @@ int parsearEntero(const char *arg, int *posicion, uint32_t *result, validadorEnt
           case '7':
           case '8':
           case '9':
+            /* Construir la sección del número reconocido*/
+            *result = *result * 10 + ((int)arg[*posicion] - 48);
+
             /* Mover el puntero para consumir el siguiente caracter*/
             (*posicion)++;
             break;
