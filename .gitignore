@@ -1,6 +1,6 @@
 # Archivos temporales de vim
 *~
-
+*.swp
 # Compilados
 *.o
 
