@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include "tarea2Utils.h" 
 
-static const char *errorArgumentos = "Formatos aceptados son los siguientes:\n\t1->num bits\n\t2->num/bits\n";
+static const char *errorArgumentos = "Formatos aceptados son los siguientes:\n\t1-> num nbits\n\t2-> num/nbits\nDonde:\n\t0 < num < 4294967296\n\t0 < nbits < 32\nNOTA:\n\tNo se permiten espacios al comienzo o final de cada\n\tnúmero ni tampoco ceros al inicio de estos\n";
 
 /*
  * Imprime un mensaje indicando cuál es el formato esperado para la entrada
@@ -42,69 +42,84 @@ void mensajeValidacionEntrada(const char *msg){
 }
 
 /*
- * Retorna el entero reconocido:
- * Esta función es temporal, solo para verificar
- * que se estén reconociendo bien los valores
- * (No se hace ninguna validación, se asume que
- * los parámetros son válidos)
- *
- * Se entiende la sobrecarga de ejecutar esta función
- * por el recorrido que hace del string, por eso solo se utilizará
- * como herramienta de debug
+ * Realizar la validación
+ * - No se valida que el estado pasado sea uno correcto
+ *   se asume que es controlado
  */
-char * obtenerValor(const char *arg, int inicio, int final){
-  char *result;
-  int length = final - inicio;
+static int validarEntero(char actual, int posicion, int *estado, const char *limite, int longitud){
+  int valor;
 
-  if ((result = (char *)malloc(sizeof(char)*(length) + 1)) == NULL){
-    terminarConError("No hay espacio en memoria\n");
-  } 
-  
-  result[length] = '\0';
+  /*
+   * Verificar que no se haya exedido el máximo de dígitos
+   * o que se esté en el máximo de ellos
+   */
+  if(posicion < longitud){
+    /* Obtener el valor para la comparación*/
+    valor = (int)actual - (int)limite[posicion];
 
-  int i;
-  for(i = 0; i <= length; i++){
-    result[i] = arg[inicio + i];
+    if(*estado == VAL_INICIO){
+        /* Asignar el nuevo estado (No se valida la longitud 1)*/
+        *estado = valor == 0 ? VAL_INICIO : valor > 0 ? VAL_MAYOR : VAL_MENOR;
+
+        /* Validar que si es la última posición el número no sea mayor*/
+        if (posicion == longitud && *estado ==VAL_MAYOR){
+          *estado = VAL_ERROR;
+        }
+    }
+  } else if(posicion == longitud){ /* Se está en el último dígito */
+    /* Verificar que no se llegue al último dígito en estado VAL_MAYOR o
+     * que estando en estado VAL_IGUAL el último dígito sea mayor*/
+    if ((*estado == VAL_INICIO && ((int)actual - (int)limite[posicion]) > 0) || (*estado == VAL_MAYOR)){
+      *estado = VAL_ERROR;
+    }
+  } else {
+    *estado = VAL_ERROR;
   }
 
-  return result;
+  return *estado;
 }
 
+/* Definir las constantes ligadas a la validación del entero*/
+static const char *MAX_32 = "4294967295";
+static const int MAX_32_LENGTH = 9; 
 /*
- *
+ * Validador para un entero menor o igual a
  */
-int convertirEntero(const char *arg, int inicio, int final, uint32_t *entero){
-  return 0;
+int validarEntero32SinSigno(char actual, int posicion, int *estado){
+  return validarEntero(actual, posicion, estado, MAX_32, MAX_32_LENGTH);
 }
 
-/*
- * Validador para un entero de 32 bits sin signo
- */
-int validarEntero32SinSigno(char actual, int inicio, int posicion, int estado){
-  return 0;
-}
-
+/* Definir las constantes ligadas a la validación de este entero*/
+static const char *MAX_BITS = "31";
+static const int MAX_BITS_LENGTH = 1; 
 /*
  * Validador para un entero menor o igual a 31
  */
-int validarEntero31Bits(char actual, int inicio, int posicion, int estado){
-  return 0;
+int validarEntero31Bits(char actual, int posicion, int *estado){
+  return validarEntero(actual, posicion, estado, MAX_BITS, MAX_BITS_LENGTH);
 }
 
 /*
  * Hace el Parsing de un string sin signo comenzando en la posición (posicion)
  * retorna 0 si termina el parsing correctamente y 1 si ocurrió algún error.
  * La variable posición retorna la última posición procesada
+ * - El método descarta reconocer un valor = 0
  * - Esta función no valida que se reciba una cadena nula, ni tampoco que
- *   la cadena en la posición sea correcta. (Esto se hace para evitar
+ *   la posición sea válida. (Esto se hace para evitar
  *   solicitar la longitud de la cadena)
  */
 int parsearEntero(const char *arg, int *posicion, uint32_t *result, validadorEntero validador){
-  /* Inicializar el procesamiento en el estado inicial */
-  int estado = 0;
+  /* Inicializar el iestado para el procesamiento */
+  int estado = REC_INICIO;
+  
+  /* Inicializar el estado para la validación*/
+  int vEstado = VAL_INICIO;
 
   /* Inicializar el entero a construir*/
   *result = 0;
+
+  /* Guardar posición inicial del parsing */
+  int inicio = *posicion;
 
   /* 
    * Ciclo infinito para consumir los caracteres
@@ -115,7 +130,7 @@ int parsearEntero(const char *arg, int *posicion, uint32_t *result, validadorEnt
     /* Discriminar el estado actual en el parsing*/
     switch (estado){
       /* Inicio del parsing de la cadena*/
-      case 0: 
+      case REC_INICIO: 
         switch(arg[*posicion]){
           case '1':
           case '2':
@@ -126,20 +141,28 @@ int parsearEntero(const char *arg, int *posicion, uint32_t *result, validadorEnt
           case '7':
           case '8':
           case '9':
+            /* Validar el número reconocido hasta el momento */
+            if(validador(arg[*posicion], *posicion - inicio, &vEstado) == VAL_ERROR){
+              return 1;
+            }
+
             /* Construir la sección del número reconocido*/
             *result = *result * 10 + ((int)arg[*posicion] - 48);
 
-            /* Mover el puntero para consumir el siguiente caracter y pasar al estado 1*/
+            /* 
+             * Mover el puntero para consumir el siguiente caracter 
+             * y pasar al estado REC_RECONOCIMIENTO
+             */
             (*posicion)++;
-            estado = 1;
+            estado = REC_RECONOCIENDO;
             break;
           default:
             return 1;
             break;
         }
         break;
-      /* Reconociendo el entero, después del primer valor */
-      case 1: 
+      /* Reconociendo el entero, después del primer dígito */
+      case REC_RECONOCIENDO: 
         switch(arg[*posicion]){
           case '0':
           case '1':
@@ -151,6 +174,11 @@ int parsearEntero(const char *arg, int *posicion, uint32_t *result, validadorEnt
           case '7':
           case '8':
           case '9':
+            /* Validar el número reconocido hasta el momento */
+            if(validador(arg[*posicion], *posicion - inicio, &vEstado) == VAL_ERROR){
+              return 1;
+            }
+
             /* Construir la sección del número reconocido*/
             *result = *result * 10 + ((int)arg[*posicion] - 48);
 

@@ -31,7 +31,7 @@ int main(int argc, const char *argv[]){
       /* Verificar que el fallo en el parsing sea por el separador */
       if (argv[1][final] == '/'){
         /* Imprimir el primer entero reconocido*/
-        printf("Primer entero: %d\n", red);
+        printf("Primer entero: %u\n", red);
 
         /* Descartar el separador */
         final++;
@@ -44,7 +44,7 @@ int main(int argc, const char *argv[]){
          */
         if(parsearEntero(argv[1],&final, &bits, &validarEntero31Bits) == 0){
           /* Imprimir el segundo entero reconocido*/
-          printf("Segundo entero: %d\n", bits);
+          printf("Segundo entero: %u\n", bits);
         } else {
           mensajeValidacionEntrada("Argumentos inválidos (Segundo entero)");
         }
@@ -62,7 +62,7 @@ int main(int argc, const char *argv[]){
     }
 
     /* Imprimir el primer entero reconocido*/
-    printf("Primer entero: %d\n", red);
+    printf("Primer entero: %u\n", red);
 
     /* Indicar que no se comienza en el primer caracter para el segundo numero*/
     final = 0;
@@ -73,7 +73,7 @@ int main(int argc, const char *argv[]){
     }
 
     /* Imprimir el segundo entero reconocido*/
-    printf("Segundo entero: %d\n", bits);
+    printf("Segundo entero: %u\n", bits);
   }
 
   return 0;
