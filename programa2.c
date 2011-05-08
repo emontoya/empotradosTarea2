@@ -30,9 +30,6 @@ int main(int argc, const char *argv[]){
     if(parsearEntero(argv[1], &final, &red, &validarEntero32SinSigno) != 0){
       /* Verificar que el fallo en el parsing sea por el separador */
       if (argv[1][final] == '/'){
-        /* Imprimir el primer entero reconocido*/
-        printf("Primer entero: %u\n", red);
-
         /* Descartar el separador */
         final++;
         
@@ -42,10 +39,7 @@ int main(int argc, const char *argv[]){
          * El parsing del segundo entero si debe retornar correctamente porque encuentra
          * el final del string
          */
-        if(parsearEntero(argv[1],&final, &bits, &validarEntero31Bits) == 0){
-          /* Imprimir el segundo entero reconocido*/
-          printf("Segundo entero: %u\n", bits);
-        } else {
+        if(parsearEntero(argv[1],&final, &bits, &validarEntero31Bits) != 0){
           mensajeValidacionEntrada("Argumentos inválidos (Segundo entero)");
         }
       }
@@ -61,20 +55,31 @@ int main(int argc, const char *argv[]){
       mensajeValidacionEntrada("Argumentos inválidos(Arg 1)");
     }
 
-    /* Imprimir el primer entero reconocido*/
-    printf("Primer entero: %u\n", red);
-
-    /* Indicar que no se comienza en el primer caracter para el segundo numero*/
+    /* Indicar que se comienza en el primer caracter para el segundo numero*/
     final = 0;
 
     /* Hacer el parsing del segundo entero*/
     if(parsearEntero(argv[2],&final, &bits, &validarEntero31Bits) != 0){
       mensajeValidacionEntrada("Argumentos inválidos(Arg 2)");
     }
-
-    /* Imprimir el segundo entero reconocido*/
-    printf("Segundo entero: %u\n", bits);
   }
+
+  /* Para almacenar la máscara de red*/
+  uint32_t mascara;
+  uint32_t subred;
+
+  uint32_t MaxInt32 = 0xFFFFFFFF;
+
+  /* Obtener la máscara de red*/
+  mascara = MaxInt32 << (32 - bits);
+
+  /* Obtener la subred */
+  subred = red & mascara;
+
+  // TODO: Esto debería meterse en una función para reutilizarla también en programa1;
+  /* Conversión a IPv4 de la subred y de la máscara*/
+  printf("Network is %u.%u.%u.%u, Mask is %u.%u.%u.%u\n",(uint8_t)((subred & 0xFF000000)>>24), (uint8_t)((subred & 0x00FF0000)>>16), (uint8_t)((subred & 0x0000FF00)>>8), (uint8_t)(subred & 0x000000FF),
+    (uint8_t)((mascara & 0xFF000000)>>24), (uint8_t)((mascara & 0x00FF0000)>>16), (uint8_t)((mascara & 0x0000FF00)>>8), (uint8_t)(mascara & 0x000000FF));    
 
   return 0;
 }
