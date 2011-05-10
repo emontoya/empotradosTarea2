@@ -1,5 +1,9 @@
+/* Programa 1. Convierte de entero a ipv4 */
+
 #include <stdio.h>
 #include <stint.h>
+
+
 int main(){
  uint32_t x=0xEC4C2C;
  uint32_t y=0xFF;
