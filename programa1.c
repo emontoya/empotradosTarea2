@@ -9,20 +9,21 @@
 
 int main(int argc, char *argv[]){
 
-
-
  validProgram1(argc);
 
- unsigned int  x=strtoul(argv[1],NULL,0);
+ uint32_t x;
+ int final=0;
+ if(parsearEntero(argv[1],&final,&x, &validarEntero32SinSigno)==0){ 
+  printf("The address is: %s\n", EnteroToIPv4(x));
+ 
+ }
+ else{
+ printf("Error: Argumento No Valid\n");
+ 
+ }
  
  
  
- 
- printf("The address is: %s", EnteroToIPv4(x));
-
- 
-
-
 
  return 0;
 

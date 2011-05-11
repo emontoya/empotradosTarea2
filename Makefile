@@ -2,8 +2,8 @@
 
 all: programa1 programa2
 
-programa1: programa1.c libTarea2  utilsx.c
-	gcc -Wall -L. -lTarea2 -o programa1 programa1.c  utilsx.c
+programa1: programa1.c libTarea2  
+	gcc -Wall -L. -lTarea2 -o programa1 programa1.c 
 	
  programa2: programa2.c libTarea2 
 	gcc -Wall -L. -lTarea2 -o programa2 programa2.c 
