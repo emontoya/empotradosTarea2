@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 
-main(){
+void main(){
 
  uint32_t x;
  uint32_t y=0xFF;
@@ -17,6 +17,4 @@ main(){
  printf(".%d", (x>>16)&y);
  printf(".%d", (x>>8)&y);
  printf(".%d\n", x&y);
-
-
 }
