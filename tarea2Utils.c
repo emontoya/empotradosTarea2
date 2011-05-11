@@ -79,6 +79,67 @@ static int validarEntero(char actual, int posicion, int *estado, const char *lim
   return *estado;
 }
 
+/*
+ * Asume que el entero es menor o igual a 255.
+ * No se hacen validaciones adicionales porque se
+ * asume que los parámetros están debidamente
+ * inicializados y en la posición correcta.
+ * (Esta es una función de uso interno y por lo
+ * tanto sus parámetros son controlados)
+ */
+static void ConvertirAString(uint32_t numero, char * result, int *pos){
+  uint32_t digito;    // 255/100
+  uint32_t potencia = 100;
+  int primero = 1;
+
+  if (numero == 0){
+    result[(*pos)++] = (char)(48);
+  }
+  else{
+    while(numero > 0){
+      digito = numero / potencia;
+      
+      if (!primero || digito > 0){
+        result[(*pos)++] = (char)(digito + 48);
+        primero = 0;
+      }
+      
+      numero = numero % potencia;
+      potencia /= 10;
+    }
+  }
+}
+
+/*
+ * Convierte un entero de 32 bits a un string en formato
+ * IPv4.
+ * El usuario de esta función es el responsable de liberar
+ * la memoria reservada para almacenar el string; 
+ */
+char * EnteroToIPv4(uint32_t entero){
+  char *result;
+
+  /* Reservar la memoria para almacenar el string*/
+  if ((result = malloc(sizeof(char) * 16)) == NULL){
+    terminarConMensaje("No hay espacio para almacenar el string");
+  }
+
+  int pos = 0;
+
+  ConvertirAString((entero >> 24) & 0x000000FF, result, &pos);
+  result[pos++] = '.';
+  ConvertirAString((entero >> 16) & 0x000000FF, result, &pos);
+  result[pos++] = '.';
+  ConvertirAString((entero >> 8) & 0x000000FF, result, &pos);
+  result[pos++] = '.';
+  ConvertirAString(entero & 0x000000FF, result, &pos);
+
+  /* Agregar el caracter que indica el final de la cadena*/
+  result[pos] = '\0';
+
+  return result;
+}
+
 /* Definir las constantes ligadas a la validación del entero*/
 static const char *MAX_32 = "4294967295";
 static const int MAX_32_LENGTH = 9; 

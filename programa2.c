@@ -1,6 +1,6 @@
 /*
- * Dado un valor entero sin signo y la cantidad de bits correspondientes a la clase de red
- * calcula la ip de red y la máscara de subred.
+ * Dado un valor entero sin signo y la cantidad de bits correspondientes a máscarada de red
+ * calcula la ip de la subred y mostrándola en formato IPv4 al igual que la máscara.
  * El programa permitirá dos posibles formatos de entrada:
  * 1 -> num bits (la solicitada en la tarea)
  * 2 -> num/bits (Esta la vamos a agregar porque es la parecida a la representación habitual)
@@ -76,10 +76,10 @@ int main(int argc, const char *argv[]){
   /* Obtener la subred */
   subred = red & mascara;
 
-  // TODO: Esto debería meterse en una función para reutilizarla también en programa1;
-  /* Conversión a IPv4 de la subred y de la máscara*/
-  printf("Network is %u.%u.%u.%u, Mask is %u.%u.%u.%u\n",(uint8_t)((subred & 0xFF000000)>>24), (uint8_t)((subred & 0x00FF0000)>>16), (uint8_t)((subred & 0x0000FF00)>>8), (uint8_t)(subred & 0x000000FF),
-    (uint8_t)((mascara & 0xFF000000)>>24), (uint8_t)((mascara & 0x00FF0000)>>16), (uint8_t)((mascara & 0x0000FF00)>>8), (uint8_t)(mascara & 0x000000FF));    
+  /* 
+   * Conversión a IPv4 de la subred y de la máscara
+   */
+  printf("Network is %s, Mask is %s\n", EnteroToIPv4(subred), EnteroToIPv4(mascara));
 
   return 0;
 }

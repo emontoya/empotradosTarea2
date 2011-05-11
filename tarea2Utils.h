@@ -38,4 +38,6 @@ int validarEntero31Bits(char actual, int posicion, int *estado);
 #define REC_RECONOCIENDO 1
 
 int parsearEntero(const char *arg, int *posicion, uint32_t *result, validadorEntero validador);
+
+char * EnteroToIPv4(uint32_t entero);
 #endif
