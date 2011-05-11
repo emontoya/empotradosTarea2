@@ -4,27 +4,28 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
-#include "utilsx.h"
+#include "tarea2Utils.h"
 
 
 int main(int argc, char *argv[]){
 
- valid1Program1(argc);
+
+
+ validProgram1(argc);
 
  unsigned int  x=strtoul(argv[1],NULL,0);
  
  
- uint32_t y=0xFF;
-  
  
- printf("The address is: ");
  
- printf("%u", (x>>24)&y);
- printf(".%u", (x>>16)&y);
- printf(".%u", (x>>8)&y);
- printf(".%u\n", x&y);
+ printf("The address is: %s", EnteroToIPv4(x));
+
+ 
+
 
 
  return 0;
+
+
 
 }
