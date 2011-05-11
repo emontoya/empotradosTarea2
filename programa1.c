@@ -18,7 +18,7 @@ int main(int argc, char *argv[]){
  
  }
  else{
- printf("Error: Argumento No Valid\n");
+ printf("Error: Argumento No Valido-Debe ser un numero\n");
  
  }
  
