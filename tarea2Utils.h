@@ -2,6 +2,7 @@
 #define TAREA2UTILS_H
 
 #include <stdint.h>
+extern void validProgram1(int a, int b);
 
 void imprimirArgumentosEsperadosP2();
 
@@ -10,6 +11,8 @@ void terminarConError(const char *err);
 void terminarConMensaje(const char *err);
 
 void mensajeValidacionEntrada(const char *msg);
+
+
 
 /* Estados para la validación*/
 #define VAL_INICIO 0

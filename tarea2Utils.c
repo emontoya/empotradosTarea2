@@ -1,9 +1,35 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
 #include "tarea2Utils.h" 
+#define ARGM 2
 
 static const char *errorArgumentos = "Formatos aceptados son los siguientes:\n\t1-> num nbits\n\t2-> num/nbits\nDonde:\n\t0 < num < 4294967296\n\t0 < nbits < 32\nNOTA:\n\tNo se permiten espacios al comienzo o final de cada\n\tnúmero ni tampoco ceros al inicio de estos\n";
+
+/*VALIDACION PROGRAMA 1*/
+
+
+void validProgram1(int n, int m){
+
+if (n!=ARGM){
+
+fprintf(stderr, "Error: Solo se permite un argumento como entrada\n");
+
+}
+
+if (m==0){
+
+fprintf(stderr, "Error: Tienes que digitar un numero\n");
+
+}
+
+
+}
+
+
+/*FIN VALIDACION PROGRAMA 1*/
+
 
 /*
  * Imprime un mensaje indicando cuál es el formato esperado para la entrada
