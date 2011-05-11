@@ -40,19 +40,19 @@ int main(int argc, const char *argv[]){
          * el final del string
          */
         if(parsearEntero(argv[1],&final, &bits, &validarEntero31Bits) != 0){
-          mensajeValidacionEntrada("Argumentos inválidos (Segundo entero)");
+          mensajeValidacionEntrada("Máscara de red inválida");
         }
       }
       else {
-        mensajeValidacionEntrada("Argumentos inválidos (Separador incorrecto)");
+        mensajeValidacionEntrada("Separador de red/máscara incorrecto");
       }
     } else {
-      mensajeValidacionEntrada("Argumentos inválidos(Arg 2 parse 1 fail)");
+      mensajeValidacionEntrada("Argumentos inválidos");
     }
   } else {
     /* Hacer el parsing del primer entero*/
     if(parsearEntero(argv[1], &final, &red, &validarEntero32SinSigno) != 0){
-      mensajeValidacionEntrada("Argumentos inválidos(Arg 1)");
+      mensajeValidacionEntrada("Valor de red inválido");
     }
 
     /* Indicar que se comienza en el primer caracter para el segundo numero*/
@@ -60,7 +60,7 @@ int main(int argc, const char *argv[]){
 
     /* Hacer el parsing del segundo entero*/
     if(parsearEntero(argv[2],&final, &bits, &validarEntero31Bits) != 0){
-      mensajeValidacionEntrada("Argumentos inválidos(Arg 2)");
+      mensajeValidacionEntrada("Máscara de red inválida");
     }
   }
 
@@ -68,10 +68,8 @@ int main(int argc, const char *argv[]){
   uint32_t mascara;
   uint32_t subred;
 
-  uint32_t MaxInt32 = 0xFFFFFFFF;
-
   /* Obtener la máscara de red*/
-  mascara = MaxInt32 << (32 - bits);
+  mascara = 0xFFFFFFFF<< (32 - bits);
 
   /* Obtener la subred */
   subred = red & mascara;
