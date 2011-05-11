@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+void validProgram1(int);
+
 void imprimirArgumentosEsperadosP2();
 
 void terminarConError(const char *err);
@@ -10,6 +12,8 @@ void terminarConError(const char *err);
 void terminarConMensaje(const char *err);
 
 void mensajeValidacionEntrada(const char *msg);
+
+
 
 /* Estados para la validación*/
 #define VAL_INICIO 0

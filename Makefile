@@ -2,11 +2,12 @@
 
 all: programa1 programa2
 
-programa1: 
-	gcc -Wall -g -o programa1 programa1.c 
-
-programa2: programa2.c libTarea2
+programa1: programa1.c libTarea2  
+	gcc -Wall -L. -lTarea2 -o programa1 programa1.c 
+	
+ programa2: programa2.c libTarea2 
 	gcc -Wall -L. -lTarea2 -o programa2 programa2.c 
+
 
 libTarea2: tarea2Utils.o
 	gcc -shared -o libTarea2.so tarea2Utils.o

@@ -2,19 +2,31 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
+#include <stdlib.h>
+#include "tarea2Utils.h"
 
 
-void main(){
+int main(int argc, char *argv[]){
+
+ validProgram1(argc);
 
  uint32_t x;
- uint32_t y=0xFF;
+ int final=0;
+ if(parsearEntero(argv[1],&final,&x, &validarEntero32SinSigno)==0){ 
+  printf("The address is: %s\n", EnteroToIPv4(x));
+ 
+ }
+ else{
+ printf("Error: Argumento No Valido-Debe ser un numero\n");
+ 
+ }
+ 
+ 
+ 
 
- printf("Enter a number: ");
- scanf("%d", &x);
+ return 0;
 
- printf("The address is: ");
- printf("%d", (x>>24)&y);
- printf(".%d", (x>>16)&y);
- printf(".%d", (x>>8)&y);
- printf(".%d\n", x&y);
+
+
 }
