@@ -1,0 +1,33 @@
+Autores:
+  Arnoldo Alcides Ramirez Jimenez(programa1)
+  Ediber Montoya Moreira(programa2)
+
+Problemas:
+
+1)Escriba un programa en código C que tome un entero sin signo y extraiga cada uno
+  de los octetos que lo conforman. Imprima el resultado como una dirección de red
+  IP4 valida. Ejemplo:
+  ./programa1 3232235521
+  Address is 192.168.0.1
+2)Escriba un programa que, dada una dirección de red especificada por un valor entero
+  sin signo y la cantidad de bits correspondiente a la clase de red, calcule el entero
+  correspondiente a la subred y la mascara de subred. Ejemplos:
+  ./programa2 3232235521 24
+  Network is 192.168.0.0, Mask is 255.255.255.0
+  ./programa2 3232235521 25
+  Network is 192.168.0.0, Mask is 255.255.255.128
+
+Notas:
+  *El uso de los programas es como se describe en los problemas. Adicionalmente, el programa
+  2 admite la entrada en formato ./programa2 3232235521/24. Este formato adicional se
+  agregó con la idea de que sea más parecido al formato utilizado comunmente para especificar
+  estas direcciones.
+  
+  *Los ejecutables que se crean son programa1 y programa2, adicionalmente se crea la librería
+   libTarea2.so.
+
+  *La instalación de los binarios y la librería se hace hacia las direcciones:
+  binarios:   /usr/local/bin/
+  librería:   /usr/lib/  
+  Se instalan con make install y se desinstalan con make uninstall. (Estos comandos tienen que
+  ejecutarse como root)
