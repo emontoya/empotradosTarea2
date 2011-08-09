@@ -5,6 +5,19 @@
 *.o
 *.so
 *.gch
+
 # Ejecutables
 programa1
 programa2
+
+# Autoconf
+autom4te.cache
+configure
+config.status
+config.log
+Makefile
+src/Makefile
+build
+aclocal.m4
+install-sh
+missing

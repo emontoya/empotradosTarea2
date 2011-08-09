@@ -1,0 +1,60 @@
+# @configure_input@
+
+# Package-specific substitution variables
+package					= @PACKAGE_NAME@
+version					= @PACKAGE_VERSION@
+tarname					= @PACKAGE_TARNAME@
+distdir					= $(tarname)-$(version)
+
+# Prefix-specific substitution variables
+prefix					= @prefix@
+exec_prefix			= @exec_prefix@
+bindir					= @bindir@
+libdir					= @libdir@
+
+# VPATH-specific substitution variables
+srcdir					= @srcdir@
+VPATH						= @srcdir@
+
+all programa1 programa2 clean install uninstall:
+	cd src && $(MAKE) $@
+
+# Build the distribution source tar gz
+dist: $(distdir).tar.gz
+
+$(distdir).tar.gz: $(distdir)
+	tar chof - $(distdir) | gzip -9 -c > $@
+	rm -rf $(distdir)
+
+$(distdir): FORCE
+	mkdir -p $(distdir)/src
+	cp $(srcdir)/configure.ac $(distdir)
+	cp $(srcdir)/configure $(distdir)
+	cp $(srcdir)/Makefile.in $(distdir)
+	cp $(srcdir)/src/Makefile.in $(distdir)/src
+	cp $(srcdir)/src/programa1.c $(distdir)/src
+	cp $(srcdir)/src/programa2.c $(distdir)/src
+	cp $(srcdir)/src/tarea2Utils.c $(distdir)/src
+	cp $(srcdir)/src/tarea2Utils.h $(distdir)/src
+
+# To test the distribution source
+distcheck: $(distdir).tar.gz
+	gzip -cd $(distdir).tar.gz | tar xvf -
+	cd $(distdir) && $(MAKE) all
+	cd $(distdir) && $(MAKE) DESTDIR=$${PWD}/_inst install
+	cd $(distdir) && $(MAKE) DESTDIR=$${PWD}/_inst uninstall
+	cd $(distdir) && $(MAKE) clean
+	rm -rf $(distdir)
+	@echo "Package $(distdir).tar.gz is ready."
+
+FORCE:
+	-rm $(distdir).tar.gz >/dev/null 2>&1
+	-rm -rf $(distdir) >/dev/null 2>&1
+
+Makefile: $(srcdir)/Makefile.in config.status
+	./config.status $@
+
+config.status: configure
+	./config.status	--recheck
+
+.PHONY: FORCE all clean dist install uninstall

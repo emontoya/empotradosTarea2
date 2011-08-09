@@ -1,0 +1,55 @@
+# @configure_input@
+
+# Package-specific substitution variables
+package					= @PACKAGE_NAME@
+version					= @PACKAGE_VERSION@
+tarname					= @PACKAGE_TARNAME@
+distdir					= $(tarname)-$(version)
+
+# Prefix-specific substitution variables
+prefix					= @prefix@
+exec_prefix			= @exec_prefix@
+bindir					= @bindir@
+libdir					= @libdir@
+
+# VPATH-specific substitution variables
+srcdir					= @srcdir@
+VPATH						= @srcdir@
+
+all: programa1 programa2
+
+programa1: $(srcdir)/programa1.c libTarea2  
+	$(CC) -Wall -L. -lTarea2 -o $@ $(srcdir)/programa1.c 
+	
+programa2: $(srcdir)/programa2.c libTarea2 
+	$(CC) -Wall -L. -lTarea2 -o $@ $(srcdir)/programa2.c 
+
+
+libTarea2: tarea2Utils.o
+	$(CC) -shared -o $@.so tarea2Utils.o
+
+tarea2Utils.o: $(srcdir)/tarea2Utils.c
+	$(CC) -Wall -fPIC -c $(srcdir)/tarea2Utils.c $(srcdir)/tarea2Utils.h
+
+install:
+	install -d $(DESTDIR)$(bindir)
+	install -d $(DESTDIR)$(libdir)
+	install -m 0755 $(srcdir)/libTarea2.so $(DESTDIR)$(libdir)/libTarea2.so
+	install -m 0755 $(srcdir)/programa1 $(DESTDIR)$(bindir)/programa1
+	install -m 0755 $(srcdir)/programa2 $(DESTDIR)$(bindir)/programa2
+
+uninstall:
+	rm -f $(DESTDIR)$(libdir)/libTarea2.so 
+	rm -f $(DESTDIR)$(bindir)/programa1
+	rm -f $(DESTDIR)$(bindir)/programa2
+
+clean:
+	-rm -f *.o *.so programa1 programa2
+
+Makefile: $(srcdir)/Makefile.in ../config.status
+	cd .. && ./config.status src/$@
+
+../config.status: ../configure
+	cd .. && ./config.status	--recheck
+
+.PHONY: all clean install uninstall
