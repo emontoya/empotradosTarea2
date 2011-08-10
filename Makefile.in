@@ -28,6 +28,7 @@ $(distdir).tar.gz: $(distdir)
 
 $(distdir): FORCE
 	mkdir -p $(distdir)/src
+	cp $(srcdir)/autogen.sh $(distdir)
 	cp $(srcdir)/configure.ac $(distdir)
 	cp $(srcdir)/configure $(distdir)
 	cp $(srcdir)/config.h.in $(distdir)
