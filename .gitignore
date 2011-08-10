@@ -21,3 +21,5 @@ build
 aclocal.m4
 install-sh
 missing
+autoscan.log
+config.h

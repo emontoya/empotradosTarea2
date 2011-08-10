@@ -18,18 +18,18 @@ VPATH						= @srcdir@
 
 all: programa1 programa2
 
-programa1: $(srcdir)/programa1.c libTarea2  
-	$(CC) -Wall -L. -lTarea2 -o $@ $(srcdir)/programa1.c 
+programa1: $(srcdir)/programa1.c libTarea2.so  
+	$(CC) -Wall -I$(srcdir) -I$(srcdir)/../include -L. -lTarea2 -o $@ $(srcdir)/programa1.c 
 	
-programa2: $(srcdir)/programa2.c libTarea2 
-	$(CC) -Wall -L. -lTarea2 -o $@ $(srcdir)/programa2.c 
+programa2: $(srcdir)/programa2.c libTarea2.so 
+	$(CC) -Wall -I$(srcdir) -I$(srcdir)/../include -L. -lTarea2 -o $@ $(srcdir)/programa2.c 
 
 
-libTarea2: tarea2Utils.o
-	$(CC) -shared -o $@.so tarea2Utils.o
+libTarea2.so: tarea2Utils.o
+	$(CC) -shared -o $@ tarea2Utils.o
 
 tarea2Utils.o: $(srcdir)/tarea2Utils.c
-	$(CC) -Wall -fPIC -c $(srcdir)/tarea2Utils.c $(srcdir)/tarea2Utils.h
+	$(CC) -Wall -I$(srcdir) -I$(srcdir)/../include -fPIC -c $(srcdir)/tarea2Utils.c
 
 install:
 	install -d $(DESTDIR)$(bindir)
@@ -46,7 +46,7 @@ uninstall:
 clean:
 	-rm -f *.o *.so programa1 programa2
 
-Makefile: $(srcdir)/Makefile.in ../config.status
+Makefile: Makefile.in ../config.status
 	cd .. && ./config.status src/$@
 
 ../config.status: ../configure
