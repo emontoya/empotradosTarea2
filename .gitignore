@@ -12,7 +12,6 @@ programa2
 
 # Autoconf
 autom4te.cache
-configure
 config.status
 config.log
 Makefile
