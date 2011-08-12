@@ -18,7 +18,7 @@ Makefile
 src/Makefile
 build
 aclocal.m4
-install-sh
+#install-sh
 missing
 autoscan.log
 config.h

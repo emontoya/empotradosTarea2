@@ -16,20 +16,27 @@ libdir					= @libdir@
 srcdir					= @srcdir@
 VPATH						= @srcdir@
 
+# Tool-specific substitution variables
+CC							= @CC@
+CFLAGS  				= @CFLAGS@
+CPPFLAGS				= @CPPFLAGS@
+DEFS						= @DEFS@
+
+
 all: programa1 programa2
 
 programa1: $(srcdir)/programa1.c libTarea2.so  
-	$(CC) -Wall -I$(srcdir) -I$(srcdir)/../include -L. -lTarea2 -o $@ $(srcdir)/programa1.c 
+	$(CC) $(CFLAGS) $(DEFS) $(CPPFLAGS) -Wall -I$(srcdir) -I$(srcdir)/../include -L. -lTarea2 -o $@ $(srcdir)/programa1.c 
 	
 programa2: $(srcdir)/programa2.c libTarea2.so 
-	$(CC) -Wall -I$(srcdir) -I$(srcdir)/../include -L. -lTarea2 -o $@ $(srcdir)/programa2.c 
+	$(CC) $(CFLAGS) $(DEFS) $(CPPFLAGS) -Wall -I$(srcdir) -I$(srcdir)/../include -L. -lTarea2 -o $@ $(srcdir)/programa2.c 
 
 
 libTarea2.so: tarea2Utils.o
 	$(CC) -shared -o $@ tarea2Utils.o
 
 tarea2Utils.o: $(srcdir)/tarea2Utils.c
-	$(CC) -Wall -I$(srcdir) -I$(srcdir)/../include -fPIC -c $(srcdir)/tarea2Utils.c
+	$(CC) $(CFLAGS) $(DEFS) $(CPPFLAGS) -Wall -I$(srcdir) -I$(srcdir)/../include -fPIC -c $(srcdir)/tarea2Utils.c
 
 install:
 	install -d $(DESTDIR)$(bindir)
