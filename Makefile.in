@@ -38,7 +38,7 @@ $(distdir): FORCE
 	cp $(srcdir)/src/programa1.c $(distdir)/src
 	cp $(srcdir)/src/programa2.c $(distdir)/src
 	cp $(srcdir)/src/tarea2Utils.c $(distdir)/src
-	cp $(srcdir)/src/tarea2Utils.h $(distdir)/src
+	cp $(srcdir)/include/tarea2Utils.h $(distdir)/src
 
 # To test the distribution source
 distcheck: $(distdir).tar.gz
